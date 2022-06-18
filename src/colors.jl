@@ -116,16 +116,21 @@ function is_background(string)::Bool
 end
 
 # --------------------------------- get color -------------------------------- #
+
+@inline r32(r::Integer)::UInt32 = (r & 0xffffff) << 16
+@inline g32(g::Integer)::UInt32 = (g & 0xffffff) << 8
+@inline b32(b::Integer)::UInt32 = (b & 0xffffff)
+
+@inline red(c::UInt32)::UInt8 = (c >> 16) & 0xff
+@inline grn(c::UInt32)::UInt8 = (c >> 8) & 0xff
+@inline blu(c::UInt32)::UInt8 = c & 0xff
+
 """
     hex2rgb(hex::String)
 
 Converts a string hex color code to a RGB color
 """
-function hex2rgb(hex)::RGBColor
-    to_int(h) = parse(Int, h; base = 16)
-    r, g, b = [to_int(hex[i:(i + 1)]) for i in (2, 4, 6)]
-    return RGBColor(r, g, b)
-end
+hex2rgb(hex::UInt32)::RGBColor = RGBColor(red(hex), grn(hex), blu(hex))
 
 """
     get_color(string::String; bg=false)::AbstractColor
@@ -148,5 +153,9 @@ function get_color(string; bg = false)::AbstractColor
         return hex2rgb(string)
     end
 end
+
+get_color(col::UInt32) = hex2rgb(string)
+get_color(col::NTuple) = RGBColor(col...)
+get_color(col::UInt8) = NamedColor
 
 end

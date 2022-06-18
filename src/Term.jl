@@ -6,7 +6,7 @@ const DEFAULT_ASPECT_RATIO = Ref(4 / 3)  # 4:3 - 16:9 - 21:9
 
 # general utils
 include("__text_utils.jl")
-include("_ansi.jl")
+include("_colors.jl")
 include("_utils.jl")
 include("_text_reshape.jl")
 
